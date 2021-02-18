@@ -1,0 +1,9 @@
+src/
+.eslintrc.js
+.browserslistrc
+.git
+babel.config.js
+tsconfig.json
+tests/
+dist/
+

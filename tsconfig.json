@@ -1,41 +1,41 @@
 {
+  "$schema": "http://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
-    "moduleResolution": "node",
-    "experimentalDecorators": true,
-    "skipLibCheck": true,
+    "module": "commonjs",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "target": "es6",
+    "lib": [
+      "ESNext"
+    ],
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "declaration": true,
+    "moduleResolution": "node",
     "sourceMap": true,
+    "outDir": "lib",
     "baseUrl": ".",
     "types": [
-      "webpack-env",
-      "jest"
+      "jest",
+      "node"
     ],
     "paths": {
-      "@/*": [
-        "src/*"
+      "*": [
+        "node_modules/*"
       ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable",
-      "scripthost"
-    ]
+    }
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
+    "./src/**/*"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "lib",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ],
+  "types": [
+    "jest",
+    "node"
   ]
 }

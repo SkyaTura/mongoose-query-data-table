@@ -1,29 +1,17 @@
 module.exports = {
   root: true,
-  env: {
-    node: true
-  },
-  'extends': [
-    'plugin:vue/essential',
-    'eslint:recommended',
-    '@vue/typescript/recommended'
+  extends: [
+    '@emiolo/eslint-config/node',
+    '@emiolo/eslint-config/ts',
   ],
-  parserOptions: {
-    ecmaVersion: 2020
-  },
+  ignorePatterns: ['node_modules/', 'tests/', 'dist/', 'lib/', 'public/'],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+    'func-names': ['off'],
+    'import/prefer-default-export': ['off'],
+    'import/no-unresolved': ['off'],
+    'import/extensions': ['off'],
+    '@typescript-eslint/member-delimiter-style': ['off'],
+    '@typescript-eslint/ban-ts-ignore': ['off'],
+    '@typescript-eslint/no-explicit-any': ['off'],
   },
-  overrides: [
-    {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)'
-      ],
-      env: {
-        jest: true
-      }
-    }
-  ]
 }
