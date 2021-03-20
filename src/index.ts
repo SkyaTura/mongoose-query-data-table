@@ -5,6 +5,10 @@ declare module 'mongoose' {
     queryDataTable: (params: Partial<QueryOptions>) => Promise<PaginatedResult>
     dataTable: (params: Partial<QueryOptions>) => Promise<PaginatedResult>
     dataTableGetFilterList: (field: string) => Promise<QueryFilterResult[]>
+    dataTableRegexSearch: (
+      filter: string,
+      fields: string[]
+    ) => DocumentQuery<any, any, any>
     dataTableSearch: (
       filter: string,
       params: object
@@ -48,6 +52,7 @@ export interface QueryOptions {
   getFilterList: string
   filter: string
   search: string
+  regexSearch: string[]
   searchOptions: object
   sortBy: string
   sortDesc: string
@@ -94,6 +99,15 @@ export default (schema: Schema, _options = {}): void => {
   }
   const { query } = schema
   const queryExtension: Partial<Query> = {
+    dataTableRegexSearch(this: Query, search: string, fields: string[]): Query {
+      const { _conditions }: any = this
+      const queries: QueryFilterPayload[] = fields.map((key) => ({
+        [key]: new RegExp(`.*${search}.*`, 'i'),
+      }))
+      return !search || !fields.length
+        ? this
+        : this.find({ $and: [_conditions, { $or: queries }] })
+    },
     dataTableSearch(this: Query, search: string, params = {}): Query {
       const { _conditions }: any = this
       return !search
@@ -254,6 +268,7 @@ export default (schema: Schema, _options = {}): void => {
       const {
         itemsPerPage,
         search,
+        regexSearch,
         sortBy,
         filter,
         getFilterList,
@@ -274,8 +289,11 @@ export default (schema: Schema, _options = {}): void => {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       let cursor: Query | DocumentQuery<any, any, any> = this
       if (filter !== undefined) cursor = cursor.dataTableFilter(filter)
-      if (search !== undefined)
-        cursor = cursor.dataTableSearch(search, searchOptions)
+      if (search !== undefined) {
+        cursor = regexSearch
+          ? cursor.dataTableRegexSearch(search, regexSearch)
+          : cursor.dataTableSearch(search, searchOptions)
+      }
       if (sortBy !== undefined) cursor = cursor.dataTableSort(sortBy, sortDesc)
       return cursor.dataTablePaginated(page, itemsPerPage)
     },
@@ -289,12 +307,7 @@ export default (schema: Schema, _options = {}): void => {
             field: `$${field}`,
           },
         },
-        { $unwind: '$field' },
-        { $unwind: '$field' },
-        { $unwind: '$field' },
-        { $unwind: '$field' },
-        { $unwind: '$field' },
-        { $unwind: '$field' },
+        ...Array(field.split('.').length).fill({ $unwind: '$field' }),
         {
           $group: {
             _id: '$field',
