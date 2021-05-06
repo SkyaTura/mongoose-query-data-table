@@ -1,6 +1,6 @@
 {
   "name": "@emiolo/mongoose-query-data-table",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "scripts": {
     "build": "tsc",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore src",
@@ -12,7 +12,6 @@
   "peerDependencies": {
     "mongoose": "^5.10.2"
   },
-  "dependencies": {},
   "devDependencies": {
     "@emiolo/babel-config": "^1.1.1",
     "@emiolo/eslint-config": "^1.1.11",
@@ -25,5 +24,9 @@
     "eslint-watch": "^7.0.0",
     "mongoose": "^5.10.2",
     "typescript": "~3.9.3"
+  },
+  "dependencies": {
+    "@types/escape-string-regexp": "^2.0.1",
+    "escape-string-regexp": "^1.0.5"
   }
 }

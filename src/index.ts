@@ -1,5 +1,8 @@
 import { Schema, DocumentQuery } from 'mongoose'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const escapeStringRegexp = require('escape-string-regexp')
+
 declare module 'mongoose' {
   interface DocumentQuery<T, DocType extends Document> {
     queryDataTable: (params: Partial<QueryOptions>) => Promise<PaginatedResult>
@@ -102,7 +105,7 @@ export default (schema: Schema, _options = {}): void => {
     dataTableRegexSearch(this: Query, search: string, fields: string[]): Query {
       const { _conditions }: any = this
       const queries: QueryFilterPayload[] = fields.map((key) => ({
-        [key]: new RegExp(`.*${search}.*`, 'i'),
+        [key]: new RegExp(`.*${escapeStringRegexp(search)}.*`, 'i'),
       }))
       return !search || !fields.length
         ? this
