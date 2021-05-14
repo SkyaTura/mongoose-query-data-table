@@ -1,6 +1,6 @@
 {
   "name": "@emiolo/mongoose-query-data-table",
-  "version": "0.0.8",
+  "version": "0.0.10",
   "scripts": {
     "build": "tsc",
     "lint": "eslint --ext .js,.ts --ignore-path .gitignore src",

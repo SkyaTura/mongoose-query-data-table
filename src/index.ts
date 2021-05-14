@@ -305,6 +305,7 @@ export default (schema: Schema, _options = {}): void => {
       field: string
     ): Promise<QueryFilterResult[]> {
       return this.model.aggregate([
+        { $match: this._conditions },
         {
           $project: {
             field: `$${field}`,
