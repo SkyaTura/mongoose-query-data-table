@@ -227,7 +227,10 @@ export default (schema: Schema, _options = {}): void => {
               const [, field, rawParams] = matchResults
               const parsed = rawParams
                 .split(',')
-                .map((params) => params.split(':'))
+                .map((params) => {
+                  const [operator, ...rest] = params.split(':')
+                  return [operator, rest.join(':')]
+                })
                 .map((params) => params.map((v) => v.trim()))
                 .map((params) =>
                   params.length <= 1 ? ['match', params[0]] : params
