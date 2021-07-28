@@ -229,7 +229,7 @@ export default (schema: Schema, _options = {}): void => {
                 .split(',')
                 .map((params) => {
                   const [operator, ...rest] = params.split(':')
-                  return [operator, rest.join(':')]
+                  return [operator, rest.join(':')].filter((v) => v !== '')
                 })
                 .map((params) => params.map((v) => v.trim()))
                 .map((params) =>
